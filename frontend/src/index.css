@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+body::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    background-image: url("./assets/graintexture.png");
+    background-position: center;
+    z-index: -10;
+}
+
+body::-webkit-scrollbar{
+  width: 0.8rem;
+}
+
+body::-webkit-scrollbar-thumb {
+   background-color: #1E1E1E;
+}
