@@ -4,8 +4,8 @@
 
 
 body {
-    position: relative;
-    scroll-behavior: smooth;
+  position: relative;
+  scroll-behavior: smooth;
 }
 
 body::before {

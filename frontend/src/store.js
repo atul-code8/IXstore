@@ -18,7 +18,7 @@ const Products = [
         id: 2,
         image: Image02,
         category: "Crewneck T-shirt",
-        title: "Basic Heavy weight T-Shirt",
+        title: "Heavy weight T-Shirt",
         price: 199,
 
     },
