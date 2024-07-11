@@ -92,7 +92,6 @@ const Product = () => {
                     </div>
                   </>
                 )}
-
                 <button className="absolute top-6 right-0">
                   <img
                     src={Arrow}

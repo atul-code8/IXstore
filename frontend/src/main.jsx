@@ -7,6 +7,8 @@ import Checkout from "./components/Checkout.jsx";
 import App from "./App.jsx";
 import Product from "./pages/Product.jsx";
 import Cart from "./pages/Cart.jsx"
+import Register from "./components/Register.jsx";
+import Login from "./components/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: "register",
+        element: <Register />
+      },
+      {
+        path: "login",
+        element: <Login />
       },
       {
         path: 'products',
@@ -40,3 +50,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
     <RouterProvider router={router} />
 );
+
+
