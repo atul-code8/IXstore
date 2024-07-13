@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const ProductDetail = ({products, id}) => {
     const current = Number(id) - 1;
+    const {cartItems, addToCart} = useContext(CartContext);
   return (
     <>
       <section className="flex items-center justify-evenly col-span-4 mt-4">
@@ -60,7 +62,7 @@ const ProductDetail = ({products, id}) => {
           </div>
 
           <div>
-            <button className="w-[90%] bg-[#D9D9D9] py-2 text-center font-bold mt-4">
+            <button className="w-[90%] bg-[#D9D9D9] py-2 text-center font-bold mt-4" >
               Add
             </button>
           </div>

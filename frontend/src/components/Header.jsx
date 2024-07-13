@@ -1,6 +1,6 @@
 // src/components/Header.js
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Hamburger from "../assets/Group36.svg";
 import Cancel from "../assets/cancel.svg";
 import Logo from "../assets/Group53.svg";
@@ -12,22 +12,17 @@ import { Client, Account } from "appwrite";
 const Header = () => {
   const [toogle, setToogle] = useState(false);
   const [isLoggedIn, setIsLoaggedIn] = useState(false);
+  const [menu, setMenu] = useState(false)
   const param = useParams();
+  const navigate = useNavigate();
 
   const fetchUser = async () => {
-    try {
-      const client = new Client()
-        .setEndpoint(import.meta.env.VITE_ENDPOINT) // Your API Endpoint
-        .setProject(import.meta.env.VITE_PROJECT_ID); // Your project ID
-
-      const account = new Account(client);
-
-      const result = await account.get();
-
-      setIsLoaggedIn(true);
-    } catch (error) {
-      console.log(error);
-    }
+    const client = new Client()
+      .setEndpoint(import.meta.env.VITE_ENDPOINT) // Your API Endpoint
+      .setProject(import.meta.env.VITE_PROJECT_ID); // Your project ID
+    const account = new Account(client);
+    const result = await account.get();
+    result && setIsLoaggedIn(true);
   };
 
   useEffect(() => {
@@ -96,15 +91,21 @@ const Header = () => {
             <img
               src={CartIcon}
               className="w-10 sm:w-fit invert hover:invert-0 transition ease-out duration-500 cursor-pointer border-none sm:border-2  rounded-full"
+              onClick={() => navigate('/cart')}
             />
             <img
               src={ProfileIcon}
               className="w-10 sm:w-fit invert hover:invert-0 transition ease-out duration-500 cursor-pointer border-none sm:border-2  rounded-full"
-              onClick={logout}
+              onClick={() => setMenu(!menu)}
             />
-            <span className="absolute top-0 left-[62%] text-purple-800 font-mono font-semibold">
-              0
-            </span>
+            {
+              menu &&
+            <div className="absolute right-0 top-14 flex flex-col space-y-2 bg-white py-2 px-4 rounded shadow-md ">
+              <Link to="/profile">Profile</Link>
+              <hr />
+              <Link to="/logout" className="text-red-500" onClick={logout}>Logout</Link>
+            </div>
+            }
           </div>
         ) : (
           <Link to={`login`}>
