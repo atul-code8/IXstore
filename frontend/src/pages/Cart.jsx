@@ -4,12 +4,14 @@ import Cart from "../components/Cart";
 import { CartContext } from "../context/CartContext";
 
 const CartPage = () => {
-  const {cartItems, removeFromCart} = useContext(CartContext);
+  const { cartItems, removeFromCart } = useContext(CartContext);
   console.log(cartItems);
   return (
     <div className="min-h-screen px-14 mt-10">
-      <h1>Cart</h1>
-      <Cart cartItems={cartItems} removeFromCart={removeFromCart}/>
+      <p className="text-sm font-semibold tracking-wider">
+        <span className="text-blue-500">Home</span> / Cart
+      </p>
+      <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
     </div>
   );
 };

@@ -92,17 +92,21 @@ const Product = () => {
                     </div>
                   </>
                 )}
-                <button className="absolute top-6 right-0">
+                <button
+                  className="absolute top-6 right-0 px-2 py-1"
+                  onClick={() =>
+                    setToogle({
+                      ...toogle,
+                      availability: !toogle.availability,
+                    })
+                  }
+                >
                   <img
                     src={Arrow}
                     alt="arrow"
-                    className="-rotate-90 w-[6px] sm:w-[8px]"
-                    onClick={() =>
-                      setToogle({
-                        ...toogle,
-                        availability: !toogle.availability,
-                      })
-                    }
+                    className={`${
+                      toogle.availability ? "-rotate-90" : "-rotate-0"
+                    } w-[6px] sm:w-[8px]`}
                   />
                 </button>
               </div>
@@ -141,14 +145,18 @@ const Product = () => {
                     </div>
                   </>
                 )}
-                <button className="absolute top-6 right-0">
+                <button
+                  className="absolute top-6 right-0 px-2 py-1"
+                  onClick={() =>
+                    setToogle({ ...toogle, category: !toogle.category })
+                  }
+                >
                   <img
                     src={Arrow}
                     alt="arrow"
-                    className="w-[6px] sm:w-[8px]"
-                    onClick={() =>
-                      setToogle({ ...toogle, category: !toogle.category })
-                    }
+                    className={`${
+                      toogle.category ? "-rotate-90" : "-rotate-0"
+                    } w-[6px] sm:w-[8px]`}
                   />
                 </button>
               </div>
@@ -178,14 +186,16 @@ const Product = () => {
                     </div>
                   </>
                 )}
-                <button className="absolute top-6 right-0">
+                <button
+                  className="absolute top-6 right-0 px-2 py-1"
+                  onClick={() => setToogle({ ...toogle, color: !toogle.color })}
+                >
                   <img
                     src={Arrow}
                     alt="arrow"
-                    className="w-[6px] sm:w-[8px]"
-                    onClick={() =>
-                      setToogle({ ...toogle, color: !toogle.color })
-                    }
+                    className={`${
+                      toogle.color ? "-rotate-90" : "-rotate-0"
+                    } w-[6px] sm:w-[8px]`}
                   />
                 </button>
               </div>
@@ -215,14 +225,18 @@ const Product = () => {
                     </div>
                   </>
                 )}
-                <button className="absolute top-6 right-0">
+                <button
+                  className="absolute top-6 right-0 px-2 py-1"
+                  onClick={() =>
+                    setToogle({ ...toogle, priceRange: !toogle.priceRange })
+                  }
+                >
                   <img
                     src={Arrow}
                     alt="arrow"
-                    className="w-[6px] sm:w-[8px]"
-                    onClick={() =>
-                      setToogle({ ...toogle, priceRange: !toogle.priceRange })
-                    }
+                    className={`${
+                      toogle.priceRange ? "-rotate-90" : "-rotate-0"
+                    } w-[6px] sm:w-[8px]`}
                   />
                 </button>
               </div>
@@ -252,14 +266,18 @@ const Product = () => {
                     </div>
                   </>
                 )}
-                <button className="absolute top-6 right-0">
+                <button
+                  className="absolute top-6 right-0 px-2 py-1"
+                  onClick={() =>
+                    setToogle({ ...toogle, rating: !toogle.rating })
+                  }
+                >
                   <img
                     src={Arrow}
                     alt="arrow"
-                    className="w-[6px] sm:w-[8px]"
-                    onClick={() =>
-                      setToogle({ ...toogle, rating: !toogle.rating })
-                    }
+                    className={`${
+                      toogle.rating ? "-rotate-90" : "-rotate-0"
+                    } w-[6px] sm:w-[8px]`}
                   />
                 </button>
               </div>
@@ -289,12 +307,16 @@ const Product = () => {
                     </div>
                   </>
                 )}
-                <button className="absolute top-6 right-0">
+                <button
+                  className="absolute top-6 right-0 px-2 py-1"
+                  onClick={() => setToogle({ ...toogle, tag: !toogle.tag })}
+                >
                   <img
                     src={Arrow}
                     alt="arrow"
-                    className="w-[6px] sm:w-[8px]"
-                    onClick={() => setToogle({ ...toogle, tag: !toogle.tag })}
+                    className={`${
+                      toogle.tag ? "-rotate-90" : "-rotate-0"
+                    } w-[6px] sm:w-[8px]`}
                   />
                 </button>
               </div>

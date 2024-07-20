@@ -1,5 +1,5 @@
 // src/pages/Home.js
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image1 from "../assets/Rectangle12.png";
 import Image2 from "../assets/Rectangle13.png";
 import Image3 from "../assets/Rectangle17.png";
@@ -19,10 +19,6 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    console.log('...');
-  }, []);
 
   return (
     <main className="lg:px-20 sm:px-8 px-4">

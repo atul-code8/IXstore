@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Account, Client, OAuthProvider } from "appwrite";
+import { OAuthProvider } from "appwrite";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { account } from "../appwrite/confing";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -13,30 +14,29 @@ const Login = () => {
 
   const logIn = async (e) => {
     e.preventDefault();
-    const client = new Client()
-      .setEndpoint(import.meta.env.VITE_ENDPOINT) // Your API Endpoint
-      .setProject(import.meta.env.VITE_PROJECT_ID); // Your project ID
-    const account = new Account(client);
-    const session = await account.createEmailPasswordSession(
-      form.email,
-      form.password
-    );
-    navigate("/");
+    try {
+      const user = await account.createEmailPasswordSession(
+        form.email,
+        form.password
+      );
+      setForm({ email: "", password: "" });
+      console.log("User Logged in Successfully:", user);
+      alert(`You successfully logged in as ${user.providerUid}`)
+      navigate("/");   
+    } catch (error) {
+      
+    }
   };
 
-  const googleLogin = async (e) => {
+  const handleGoogleLogin = (e) => {
     e.preventDefault();
-    const client = new Client()
-      .setEndpoint(import.meta.env.VITE_ENDPOINT) // Your API Endpoint
-      .setProject(import.meta.env.VITE_PROJECT_ID); // Your project ID
-    const account = new Account(client);
     // Go to OAuth provider login page
-    account.createOAuth2Session(
-      OAuthProvider.Google, // provider
-      "http://localhost:5173", // redirect here on success
-      "http://localhost:5173/failed", // redirect here on failure
-      // [] // scopes (optional)
-    );
+    account
+      .createOAuth2Session(
+        OAuthProvider.Google,
+        "https://ix-store.vercel.app/",
+        "https://ix-store.vercel.app/auth/redirect"
+      );
   };
 
   return (
@@ -77,7 +77,7 @@ const Login = () => {
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-700 w-[73%] mx-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-700 w-[76.74%] mx-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
             onClick={logIn}
           >
@@ -85,7 +85,10 @@ const Login = () => {
           </button>
         </div>
         <div className="text-center">
-          <button className="gsi-material-button mt-2" onClick={googleLogin}>
+          <button
+            className="gsi-material-button mt-2"
+            onClick={handleGoogleLogin}
+          >
             <div className="gsi-material-button-state"></div>
             <div className="gsi-material-button-content-wrapper">
               <div className="gsi-material-button-icon">
@@ -116,7 +119,7 @@ const Login = () => {
                 </svg>
               </div>
               <span className="gsi-material-button-contents">
-                Sign in with Google
+                Continue with Google
               </span>
               <span style={{ display: "none" }}>Sign in with Google</span>
             </div>

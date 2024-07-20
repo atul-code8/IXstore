@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Client, Account, ID, OAuthProvider } from "appwrite";
+import { ID, OAuthProvider } from "appwrite";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { account } from "../appwrite/confing";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -14,40 +15,40 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const client = new Client()
-      .setEndpoint(import.meta.env.VITE_ENDPOINT) // Your API Endpoint
-      .setProject(import.meta.env.VITE_PROJECT_ID); // Your project ID
-
-    const account = new Account(client);
-
-    const user = await account.create(
-      ID.unique(),
-      form.email,
-      form.password,
-      form.username
-    );
-
-    const promise = await account.createEmailPasswordSession(
-      form.email,
-      form.password
-    );
-    navigate("/");
+    try {
+      const user = await account.create(
+        ID.unique(),
+        form.email,
+        form.password,
+        form.username
+      );
+      console.log("user registered successfully:", user);
+      const promise = await account.createEmailPasswordSession(
+        form.email,
+        form.password
+      );
+      setForm({
+        username: "",
+        email: "",
+        password: ""
+      })
+      console.log("user logged in", promise);
+      navigate("/");
+    } catch (error) {
+      console.error("Error creating user:", error.message);
+      alert(error.message);
+    }
   };
 
   const googleSignup = async (e) => {
     e.preventDefault();
-    const client = new Client()
-      .setEndpoint(import.meta.env.VITE_ENDPOINT) // Your API Endpoint
-      .setProject(import.meta.env.VITE_PROJECT_ID); // Your project ID
-    const account = new Account(client);
     // Go to OAuth provider login page
     account.createOAuth2Session(
       OAuthProvider.Google, // provider
-      "http://localhost:5173", // redirect here on success
-      "http://localhost:5173/failed", // redirect here on failure
+      "https://ix-store.vercel.app/", // redirect here on success
+      "https://ix-store.vercel.app/auth/redirect" // redirect here on failure
       // [] // scopes (optional)
     );
-
   };
 
   return (
@@ -107,7 +108,7 @@ const Register = () => {
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-700 w-[73%] mx-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-700 w-[76.74%] mx-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
             Register
@@ -145,7 +146,7 @@ const Register = () => {
                 </svg>
               </div>
               <span className="gsi-material-button-contents">
-                Sign up with Google
+                Continue with Google
               </span>
               <span style={{ display: "none" }}>Sign up with Google</span>
             </div>
