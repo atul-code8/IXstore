@@ -45,8 +45,8 @@ const Register = () => {
     // Go to OAuth provider login page
     account.createOAuth2Session(
       OAuthProvider.Google, // provider
-      "https://ix-store.vercel.app/", // redirect here on success
-      "https://ix-store.vercel.app/auth/redirect" // redirect here on failure
+      "https://ix-store.vercel.app/success", // redirect here on success
+      "https://ix-store.vercel.app/failed" // redirect here on failure
       // [] // scopes (optional)
     );
   };
