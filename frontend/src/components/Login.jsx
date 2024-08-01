@@ -34,8 +34,8 @@ const Login = () => {
     account
       .createOAuth2Session(
         OAuthProvider.Google,
-        "http://localhost:5173/success",
-        "http://localhost:5173/failed"
+        "https://ix-store.vercel.app/success",
+        "https://ix-store.vercel.app/failed"
       );
   };
 
