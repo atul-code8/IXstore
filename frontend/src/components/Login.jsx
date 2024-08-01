@@ -24,7 +24,7 @@ const Login = () => {
       alert(`You successfully logged in as ${user.providerUid}`);
       navigate("/");
     } catch (error) {
-      console.log("ERROR When login user !!!");
+      console.log("ERROR When login user !!!", error);
       throw error;
     }
   };
