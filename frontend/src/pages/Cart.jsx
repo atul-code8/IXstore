@@ -5,7 +5,7 @@ import { CartContext } from "../context/CartContext";
 
 const CartPage = () => {
   const { cartItems, removeFromCart } = useContext(CartContext);
-  console.log(cartItems);
+  // console.log(cartItems);
   return (
     <div className="min-h-screen px-14 mt-10">
       <p className="text-sm font-semibold tracking-wider">

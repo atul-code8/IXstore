@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Checkout from "./components/Checkout.jsx";
 import App from "./App.jsx";
@@ -31,8 +31,12 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
+        path: "success",
+        element: <Navigate to="/"/>
+      },
+      {
         path: "logout",
-        element: <>Logged out successfully</>
+        element: <Navigate to="/"/>
       },
       {
         path: "profile",

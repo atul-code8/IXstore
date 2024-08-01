@@ -358,7 +358,7 @@ const Product = () => {
                 <img
                   src={Filter}
                   alt="filter"
-                  className="block sm:hidden w-4 absolute left-0 top-12 cursor-pointer"
+                  className="block sm:hidden w-6 absolute left-0 top-12 cursor-pointer"
                   onClick={() => setPanel(!panel)}
                 />
               </div>

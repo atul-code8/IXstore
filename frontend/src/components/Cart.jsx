@@ -1,9 +1,8 @@
-// src/components/Cart.js
+// src/components/Cart.jsx
 import React from "react";
 
 const Cart = ({ cartItems, removeFromCart }) => (
   <div>
-    <h2>Shopping Cart</h2>
     {cartItems.length === 0 ? (
       <p>No items in cart</p>
     ) : (

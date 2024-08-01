@@ -3,16 +3,16 @@ import Logo from "../assets/Group53.svg";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#b9b9b9cc] px-4 sm:px-16 pt-16 mt-8">
+    <footer className="bg-[#b9b9b9cc] px-5 sm:px-16 pt-16 mt-8">
       <div className="flex justify-evenly sm:flex-row flex-col items-start">
-        <div className="flex space-x-4 sm:block sm:space-x-0">
+        <div className="flex flex-col sm:flex-row sm:block">
           <p>PRICING</p>
           <p>ABOUT</p>
           <p>CONTACT</p>
         </div>
         <div className="flex flex-col items-center gap-4 mt-4 sm:mt-0">
           <img src={Logo} width={30} alt="logo" />
-          <div className="flex space-x-4">
+          <div className="flex flex-col sm:flex-row sm:space-x-4">
             <a
               href="https://www.instagram.com"
               className="hover:underline cursor-pointer"

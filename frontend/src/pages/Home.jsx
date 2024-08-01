@@ -35,7 +35,7 @@ const Home = () => {
         />
       </section>
 
-      <section id="#2" className="flex flex-col sm:flex-row sm:space-x-8 relative pb-12 sm:pb-0">
+      <section id="#2" className="flex flex-col xl:flex-row sm:space-x-8 relative pb-12 sm:pb-0">
         <div className="mt-14 flex flex-col justify-between">
           <div>
           <h1 className="text-3xl sm:text-[54px] sm:leading-[48px] font-bold tracking-tight notable-regular">
@@ -43,7 +43,7 @@ const Home = () => {
             </h1>
             <p className="mt-2 sm:mt-3">2024</p>
           </div>
-          <div className="flex absolute left-1 bottom-0">
+          <div className="flex absolute left-1 bottom-0 sm:-bottom-20 xl:bottom-0">
             <div className="w-[176px] h-[30px] sm:w-[265px] sm:h-[40px] bg-[#D9D9D9] flex justify-between items-center px-6">
               <span className="text-sm sm:text-base">Go to shop</span>
               <img src={Arrow} alt="goToArrow" className="w-10 sm:w-fit"/>
@@ -59,8 +59,8 @@ const Home = () => {
           </div>
         </div>
         <div className="mt-8 sm:mt-14 flex gap-2 sm:gap-[41px] row-start-4">
-          <img src={Image1} alt="post" className="w-[169px] h-[173px] sm:w-full sm:h-full"/>
-          <img src={Image2} alt="post" className="w-[169px] h-[173px] sm:w-full sm:h-full"/>
+          <img src={Image1} alt="post" className="w-[169px] h-[173px] sm:w-80 sm:h-80 md:w-full md:h-full"/>
+          <img src={Image2} alt="post" className="w-[169px] h-[173px] sm:w-80 sm:h-80 md:w-full md:h-full"/>
         </div>
       </section>
 
@@ -69,7 +69,7 @@ const Home = () => {
           New <br /> This week
         </h1>
 
-        <div className="flex mt-10 space-x-8 overflow-x-scroll sm:overflow-x-auto pb-4 sm:pb-0">
+        <div className="flex mt-10 space-x-8 overflow-x-scroll sm:overflow-x-auto pb-4 2xl:pb-0">
           <div>
             <div className="w-[169px] sm:w-[305px] overflow-hidden">
               <img src={Image6} alt="img" width={400} />
