@@ -21,22 +21,22 @@ const Login = () => {
       );
       setForm({ email: "", password: "" });
       console.log("User Logged in Successfully:", user);
-      alert(`You successfully logged in as ${user.providerUid}`)
-      navigate("/");   
+      alert(`You successfully logged in as ${user.providerUid}`);
+      navigate("/");
     } catch (error) {
-      throw error
+      console.log("ERROR When login user !!!");
+      throw error;
     }
   };
 
   const handleGoogleLogin = (e) => {
     e.preventDefault();
     // Go to OAuth provider login page
-    account
-      .createOAuth2Session(
-        OAuthProvider.Google,
-        "https://ix-store.vercel.app/success",
-        "https://ix-store.vercel.app/failed"
-      );
+    account.createOAuth2Session(
+      OAuthProvider.Google,
+      "https://ix-store.vercel.app/success",
+      "https://ix-store.vercel.app/failed"
+    );
   };
 
   return (
