@@ -3,31 +3,58 @@ import { OAuthProvider } from "appwrite";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { account } from "../appwrite/confing";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const logIn = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const user = await account.createEmailPasswordSession(
-        form.email,
-        form.password
-      );
-      setForm({ email: "", password: "" });
-      console.log("User Logged in Successfully:", user);
-      alert(`You successfully logged in as ${user.providerUid}`);
-      navigate("/");
-    } catch (error) {
-      console.log("ERROR When login user !!!", error);
-      throw error;
-    }
+    setIsLoading(true);
+    axios
+      .post(`http://localhost:3000/api/auth/login`, {
+        email: form.email,
+        password: form.password,
+      })
+      .then(function (response) {
+        console.log(response);
+        setIsLoading(false);
+        sessionStorage.setItem("userId", response.data.session.userId);
+        toast.success("User logged in successfully!");
+        setForm({
+          email: "",
+          password: "",
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      })
+      .catch(function (error) {
+        setIsLoading(false);
+        toast.error("Error in login user!");
+        throw new Error(error);
+      });
   };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const promise = account.createEmailPasswordSession(form.email, form.password);
+
+    promise.then(function (response) {
+        console.log(response); // Success
+        setIsLoading(false);
+    }, function (error) {
+        console.log(error); // Failure
+    });
+  }
 
   const handleGoogleLogin = (e) => {
     e.preventDefault();
@@ -41,7 +68,9 @@ const Login = () => {
 
   return (
     <div className="w-full min-h-screen max-w-xs mx-auto transition-opacity duration-500 ease-in-out opacity-100 pt-10">
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <Toaster />
+      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative" onSubmit={handleSubmit}>
+        {isLoading && <div className="loader absolute top-0 left-0"></div>}
         <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
         <div className="mb-4">
           <label
@@ -78,8 +107,7 @@ const Login = () => {
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 w-[76.74%] mx-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button"
-            onClick={logIn}
+            type="submit"
           >
             Sign In
           </button>

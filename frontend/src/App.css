@@ -110,4 +110,14 @@
   opacity: 8%;
 }
 
-
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 100%;
+  padding-bottom: 3px;
+  background: linear-gradient(#0000FF 0 0) 0 100%/0% 3px no-repeat;
+  animation: l2 2s linear infinite;
+}
+.loader:before {
+  content:" "
+}
+@keyframes l2 {to{background-size: 100% 3px}}

@@ -8,6 +8,7 @@ import FavorateIcon from "../assets/favorate.svg";
 import ProfileIcon from "../assets/profile.svg";
 import CartIcon from "../assets/cart.svg";
 import { account } from "../appwrite/confing";
+import axios from "axios";
 
 const Header = () => {
   const [toogle, setToogle] = useState(false);
@@ -17,12 +18,17 @@ const Header = () => {
   const navigate = useNavigate();
 
   const fetchUser = async () => {
-    try {
-      await account.get();
-      setIsLoaggedIn(true);
-    } catch (error) {
-      console.log("User not found:", error.message);
-    }
+    // const user = await account.get();
+    // console.log(user);
+
+    axios
+      .get("http://localhost:3000/api/auth/user")
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const logout = async () => {
@@ -37,7 +43,7 @@ const Header = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [param]);
+  }, []);
 
   return (
     <header className="pt-5 sm:pt-[41px]">
@@ -67,7 +73,7 @@ const Header = () => {
             Collections
           </Link>
           <Link
-            to="/new"
+            to="/products"
             className={`text-xs sm:text-base ${
               toogle ? "inline-block" : "hidden"
             } sm:inline-block font-semibold`}
@@ -110,7 +116,7 @@ const Header = () => {
           <Link to={`login`}>
             <button
               type="button"
-              className="px-4 py-2 border-gray-700 border-2 rounded hover:bg-[#D9D9D9] hover:font-semibold transition delay-200 ease-out"
+              className="px-4 py-2 border-gray-700 border-2 rounded hover:bg-[#D9D9D9] font-semibold transition delay-200 ease-out"
             >
               Login
             </button>

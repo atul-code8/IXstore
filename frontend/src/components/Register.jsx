@@ -3,6 +3,8 @@ import { ID, OAuthProvider } from "appwrite";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { account } from "../appwrite/confing";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -10,34 +12,54 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const user = await account.create(
-        ID.unique(),
-        form.email,
-        form.password,
-        form.username
-      );
-      console.log("user registered successfully:", user);
-      const promise = await account.createEmailPasswordSession(
-        form.email,
-        form.password
-      );
-      setForm({
-        username: "",
-        email: "",
-        password: ""
+    setIsLoading(true);
+    axios
+      .post(`http://localhost:3000/api/auth/signup`, {
+        email: form.email,
+        password: form.password,
+        name: form.username,
       })
-      console.log("user logged in", promise);
-      navigate("/");
-    } catch (error) {
-      console.error("Error creating user:", error.message);
-      alert(error.message);
-    }
+      .then(function (response) {
+        console.log(response);
+        
+        setIsLoading(false);
+        toast.success("User created successfully!");
+        setForm({
+          username: "",
+          email: "",
+          password: "",
+        });
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      })
+      .catch(function (error) {
+        setIsLoading(false);
+        toast.error("Error in creating user!");
+        throw new Error(error);
+      });
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const promise = account.create(ID.unique(), form.email, form.password, form.username);
+
+    promise.then(
+      function (response) {
+        console.log(response); // Success
+        setIsLoading(false);
+      },
+      function (error) {
+        console.log(error); // Failure
+      }
+    );
   };
 
   const googleSignup = async (e) => {
@@ -53,10 +75,12 @@ const Register = () => {
 
   return (
     <div className="w-full min-h-screen max-w-xs mx-auto transition-opacity duration-500 ease-in-out opacity-100 pt-10">
+      <Toaster />
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative"
         onSubmit={handleSubmit}
       >
+        {isLoading && <div className="loader absolute top-0 left-0"></div>}
         <h2 className="text-center text-2xl font-bold mb-4">Register</h2>
         <div className="mb-4">
           <label
@@ -115,7 +139,7 @@ const Register = () => {
           </button>
         </div>
         <div className="text-center">
-          <button className="gsi-material-button mt-2" onClick={googleSignup}>
+          <button type="button" className="gsi-material-button mt-2" onClick={googleSignup}>
             <div className="gsi-material-button-state"></div>
             <div className="gsi-material-button-content-wrapper">
               <div className="gsi-material-button-icon">

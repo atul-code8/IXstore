@@ -3,7 +3,7 @@ import Logo from "../assets/Group53.svg";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#b9b9b9cc] px-5 sm:px-16 pt-16 mt-8">
+    <footer className="bg-[#D9D9D9] px-5 sm:px-16 pt-16 mt-8">
       <div className="flex justify-evenly sm:flex-row flex-col items-start">
         <div className="flex flex-col sm:flex-row sm:block">
           <p>PRICING</p>

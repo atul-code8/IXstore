@@ -6,16 +6,16 @@ const ProductDetail = ({products, id}) => {
     const {cartItems, addToCart} = useContext(CartContext);
   return (
     <>
-      <section className="flex items-center justify-evenly col-span-4 mt-4">
-        <div className="w-[367px] h-[438px] bg-white">
+      <section className="flex flex-col lg:flex-row items-center justify-evenly col-span-4 mt-4">
+        <div className="bg-white">
           <img
             src={products[current].image}
             alt="detail"
             className="w-full h-full object-center"
           />
         </div>
-        <div className="w-[310px] h-[500px] border-2 border-[#D9D9D9] pl-10">
-          <h2 className="mt-10 text-lg notable-regular tracking-wide">
+        <div className="w-auto max-w-[500px] border-2 border-[#D9D9D9] p-10 mt-12 lg:mt-0">
+          <h2 className="text-lg notable-regular tracking-wide">
             abstract print shirt
           </h2>
           <p className="font-bold mt-2">$199</p>
@@ -62,7 +62,7 @@ const ProductDetail = ({products, id}) => {
           </div>
 
           <div>
-            <button className="w-[90%] bg-[#D9D9D9] py-2 text-center font-bold mt-4" >
+            <button type="button" className="w-full hover:ring-2 transition bg-[#D9D9D9] py-2 text-center font-bold mt-4" >
               Add
             </button>
           </div>

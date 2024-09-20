@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <main className="lg:px-20 sm:px-8 px-4">
-      <section id="#1">
+      {/* <section id="#1">
         <div className="mt-14">
           <p>MEN</p>
           <p>WOMEN</p>
@@ -33,9 +33,9 @@ const Home = () => {
           placeholder="Find"
           className="bg-[#D9D9D9] w-[80%] h-[34px] sm:w-[367px] sm:h-[50px] mt-4 px-4 focus:ring-2 focus:placeholder-transparent focus:outline-none focus:ring-blue-500"
         />
-      </section>
+      </section> */}
 
-      <section id="#2" className="flex flex-col xl:flex-row sm:space-x-8 relative pb-12 sm:pb-0">
+      <section id="#2" className="flex flex-col xl:flex-row sm:space-x-8 relative pb-12 sm:pb-0 mt-8">
         <div className="mt-14 flex flex-col justify-between">
           <div>
           <h1 className="text-3xl sm:text-[54px] sm:leading-[48px] font-bold tracking-tight notable-regular">
@@ -44,7 +44,7 @@ const Home = () => {
             <p className="mt-2 sm:mt-3">2024</p>
           </div>
           <div className="flex absolute left-1 bottom-0 sm:-bottom-20 xl:bottom-0">
-            <div className="w-[176px] h-[30px] sm:w-[265px] sm:h-[40px] bg-[#D9D9D9] flex justify-between items-center px-6">
+            <div className="w-[176px] h-[30px] sm:w-[265px] sm:h-[40px] bg-[#D9D9D9] flex justify-between items-center px-6 cursor-pointer">
               <span className="text-sm sm:text-base">Go to shop</span>
               <img src={Arrow} alt="goToArrow" className="w-10 sm:w-fit"/>
             </div>
