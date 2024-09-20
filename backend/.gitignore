@@ -1,1 +1,7 @@
+# Backend folder .gitignore file.
+
 node_modules
+
+# environment
+.env
+*.local
