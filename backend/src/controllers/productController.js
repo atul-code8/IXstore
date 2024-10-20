@@ -1,8 +1,34 @@
-import Product, { find, findById } from '../models/Product';
+import Product from '../models/Product.js';
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary"
+import cloudinary from '../cloudinary/config.js';
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'ecommerce',
+      allowed_formats: ['jpg', 'jpeg', 'png'],
+    },
+  });
+const upload = multer({ storage });
 
 const getProducts = async (req, res) => {
-    const products = await find({});
-    res.json(products);
+    const page = Math.max(Number(req.query.page) || 1, 1);  // Ensure page is at least 1
+    const limit = Math.max(Number(req.query.limit) || 10, 1);  // Ensure limit is at least 1
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find().skip(skip).limit(limit);
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    res.status(200).json({
+      totalProducts,
+      totalPages,
+      currentPage: page,
+      products,
+    });
+    // const products = await Product.find({});
+    // res.json(products);
 };
 
 const getProductById = async (req, res) => {
@@ -15,7 +41,8 @@ const getProductById = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-    const { name, price, description, imageUrl, countInStock } = req.body;
+    const { name, price, description, countInStock } = req.body;
+    const imageUrl = req.file.path;
     const product = new Product({
         name,
         price,
@@ -56,4 +83,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-export default { getProducts, getProductById, createProduct, updateProduct, deleteProduct };
+export { getProducts, getProductById, createProduct, updateProduct, deleteProduct, upload };

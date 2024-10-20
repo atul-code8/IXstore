@@ -2,20 +2,16 @@ import { Router } from "express";
 import {
   signUp,
   logIn,
-  logOut,
-  getUser,
-  // logInWithGoogle,
-  // oauthCallback,
+  callback,
+  signUpWithGoogle,
 } from "../controllers/authController.js";
-import auth from "../middleware/auth.js";
+
 
 const router = Router();
 
 router.post("/register", signUp);
 router.post("/login", logIn);
-router.get("/user", auth, getUser);
-router.post("/logout", logOut);
-// router.get("/oauth", logInWithGoogle);
-// router.get('/callback', oauthCallback);
+router.get('/google', signUpWithGoogle);
+router.get('/google/callback', callback);
 
 export default router;

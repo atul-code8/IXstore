@@ -1,14 +1,15 @@
 import jwt from "jsonwebtoken";
-import pkg from 'bcryptjs';
-import "dotenv/config";
+import pkg from "bcryptjs";
 import User from "../models/User.js";
+import { oauth2Client } from "../googleAuth/config.js";
+import { google } from "googleapis";
+import "dotenv/config";
 
 const { genSalt, hash, compare } = pkg;
 const { sign } = jwt;
 
-
 const signUp = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
 
   try {
     // Check if user already exists
@@ -22,6 +23,7 @@ const signUp = async (req, res) => {
       username,
       email,
       password,
+      role,
     });
 
     // Hash the password
@@ -39,7 +41,6 @@ const signUp = async (req, res) => {
 
 const logIn = async (req, res) => {
   const { email, password } = req.body;
-
   try {
     // Check if user exists
     let user = await User.findOne({ email });
@@ -57,12 +58,13 @@ const logIn = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
+        role: user.role,
       },
     };
 
     sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ access_token: token });
     });
   } catch (err) {
     console.error(err.message);
@@ -72,19 +74,55 @@ const logIn = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    // const user = await account.get();
     res.status(200).json("I'am User!");
   } catch (error) {
     res.status(400).json({ error });
   }
 };
-
-const logOut = async (req, res) => {
+const getAdmin = async (req, res) => {
   try {
-    await account.deleteSession("current");
-    res.status(204).send();
+    res.status(200).json("I'am Admin!");
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error });
+  }
+};
+
+const signUpWithGoogle = async (req, res) => {
+  const authUrl = oauth2Client.generateAuthUrl({
+    access_type: "offline", // 'offline' to get a refresh token
+    prompt: "consent", // Ask the user to re-consent to permissions
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email",
+    ],
+  });
+  res.redirect(authUrl);
+};
+
+const callback = async (req, res) => {
+  const code = req.query.code;
+  try {
+    // Exchange the authorization code for an access token
+    const { tokens } = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(tokens);
+
+    // Fetch user's profile information
+    const oauth2 = google.oauth2({
+      auth: oauth2Client,
+      version: "v2",
+    });
+
+    const userInfo = await oauth2.userinfo.get();
+
+    // Store user info in a cookie (or session storage)
+    res.cookie("token", tokens.id_token, { httpOnly: true });
+    res.cookie("user", JSON.stringify(userInfo.data), { httpOnly: true });
+
+    // Redirect to the profile page
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error exchanging code for tokens:", error);
+    res.redirect("/");
   }
 };
 
@@ -112,9 +150,4 @@ const logOut = async (req, res) => {
 //   }
 // };
 
-export {
-  signUp,
-  logIn,
-  getUser,
-  logOut,
-};
+export { signUp, logIn, getUser, getAdmin, signUpWithGoogle, callback };

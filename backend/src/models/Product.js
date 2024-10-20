@@ -21,6 +21,6 @@ const ProductSchema = new Schema({
         type: Number,
         required: true,
     },
-});
+}, {timestamps: true});
 
 export default model('Product', ProductSchema);
