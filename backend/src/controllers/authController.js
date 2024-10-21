@@ -3,7 +3,6 @@ import pkg from "bcryptjs";
 import User from "../models/User.js";
 import { oauth2Client } from "../googleAuth/config.js";
 import { google } from "googleapis";
-import "dotenv/config";
 
 const { genSalt, hash, compare } = pkg;
 const { sign } = jwt;
@@ -15,7 +14,7 @@ const signUp = async (req, res) => {
     // Check if user already exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     // Create new user
@@ -32,7 +31,7 @@ const signUp = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({ msg: "User registered successfully" });
+    res.status(201).json({ message: "User registered successfully", user });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -45,13 +44,13 @@ const logIn = async (req, res) => {
     // Check if user exists
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ msg: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // Check if password matches
     const isMatch = await compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ msg: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // Generate JWT token
@@ -64,26 +63,11 @@ const logIn = async (req, res) => {
 
     sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" }, (err, token) => {
       if (err) throw err;
-      res.json({ access_token: token });
+      res.json({message: 'Token generated successfully', access_token: token });
     });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
-  }
-};
-
-const getUser = async (req, res) => {
-  try {
-    res.status(200).json("I'am User!");
-  } catch (error) {
-    res.status(400).json({ error });
-  }
-};
-const getAdmin = async (req, res) => {
-  try {
-    res.status(200).json("I'am Admin!");
-  } catch (error) {
-    res.status(400).json({ error });
   }
 };
 
@@ -150,4 +134,4 @@ const callback = async (req, res) => {
 //   }
 // };
 
-export { signUp, logIn, getUser, getAdmin, signUpWithGoogle, callback };
+export { signUp, logIn, signUpWithGoogle, callback };
