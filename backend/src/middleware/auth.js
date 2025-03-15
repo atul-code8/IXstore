@@ -13,6 +13,14 @@ function auth(req, res, next) {
 
   const tokenValue = token.split(" ")[1];
 
+  // --- using cookies ---
+
+  // const tokenValue = req.cookies.token;
+
+  // if (!tokenValue) {
+  //   return res.status(401).json({ message: "Unauthorized, token required!" });
+  // }
+
   try {
     const decoded = verify(tokenValue, process.env.JWT_SECRET);
     req.user = decoded.user;

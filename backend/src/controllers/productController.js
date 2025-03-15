@@ -27,8 +27,6 @@ const getProducts = async (req, res) => {
       currentPage: page,
       products,
     });
-    // const products = await Product.find({});
-    // res.json(products);
 };
 
 const getProductById = async (req, res) => {
