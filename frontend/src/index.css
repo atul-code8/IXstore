@@ -2,30 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
-  position: relative;
-  scroll-behavior: smooth;
+  background: #eaeaea;
+  box-sizing: border-box;
 }
 
 body::before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.4;
-    background-image: url("./assets/graintexture.png");
-    background-position: center;
-    z-index: -10;
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("./assets/nnnoise.svg");
+  background-size: contain;
+  z-index: -1;
 }
 
-body::-webkit-scrollbar{
-  width: 0.8rem;
+/* body::before {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px), 
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(45deg, rgba(0, 0, 0, 0.05) 2px, transparent 2px),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.05) 2px, transparent 2px);
+  background-size: 5px 5px, 5px 5px, 10px 10px, 10px 10px;
+  opacity: 0.2; 
+  pointer-events: none;
+  z-index: -1;
+} */
+
+body::-webkit-scrollbar {
+  width: 0.65rem;
 }
 
 body::-webkit-scrollbar-thumb {
-   background-color: #1E1E1E;
+  background-color: #1e1e1e;
 }

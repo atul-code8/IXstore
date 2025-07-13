@@ -1,69 +1,104 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home.jsx";
-import Checkout from "./components/Checkout.jsx";
 import App from "./App.jsx";
 import Product from "./pages/Product.jsx";
 import Cart from "./pages/Cart.jsx";
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
-import { CartProvider } from "./context/CartContext.jsx";
 import Profile from "./components/Profile.jsx";
+import ProductDetail from "./components/ProductDetail.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { Toaster } from "react-hot-toast";
+import AfterCheckoutPage from "./components/AfterCheckoutPage.jsx";
+import ContactPage from "./pages/Contact.jsx";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <h1 className="text-5xl font-mono text-center pt-40 min-h-screen">Page not found 404!</h1>,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "register",
-        element: <Register />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "success",
-        element: <Navigate to="/"/>
-      },
-      {
-        path: "logout",
-        element: <Navigate to="/"/>
-      },
-      {
-        path: "profile",
-        element: <Profile />
-      },
-      {
-        path: "products",
-        element: <Product />,
-      },
-      {
-        path: "products/:id",
-        element: <Product />,
-      },
-      {
-        path: "cart",
-        element: <Cart />,
-      },
-      {
-        path: "checkout",
-        element: <Checkout />,
-      },
-    ],
-  },
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "register",
+          element: <Register />,
+        },
+        {
+          path: "products",
+          element: <Product />,
+        },
+        {
+          path: "product/:id",
+          element: <ProductDetail />,
+        },
+        {
+          path: "cart",
+          element: <Cart />,
+        },
+        {
+          path: "success",
+          element: <AfterCheckoutPage />,
+        },
+        {
+          path: "contact",
+          element: <ContactPage />,
+        },
+        {
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  { future: { v7_relativeSplatPath: true } }
+);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+  <>
+    <RouterProvider future={{ v7_startTransition: true }} router={router} />
+    <Toaster
+      position="top-center"
+      reverseOrder={false}
+      gutter={8}
+      toastOptions={{
+        duration: 4000,
+        style: {
+          background: "#333",
+          color: "#fff",
+          fontSize: "16px",
+          width: "400px",
+          maxWidth: "90%",
+        },
+        success: {
+          style: {
+            background: "#E0FBE2",
+            color: "#333",
+          },
+        },
+        error: {
+          style: {
+            background: "#FFF",
+            color: "#333",
+          },
+        },
+      }}
+    />
+  </>
 );

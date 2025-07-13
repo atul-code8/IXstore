@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
-import { account } from "../appwrite/confing";
+import axios from "axios";
 
 const Profile = () => {
   const [profile, setProfile] = useState();
-  const getUser = async () => {
+  const getProducts = async () => {
+    console.log("Profile!");
     try {
-      const result = await account.get();
-      setProfile(result);  
+      // const response = await axios.get(
+      //   "http://localhost:8080/api/product/list",
+      //   { withCredentials: true }
+      // );
+      // const data = await response.data;
+      // console.log(data);
     } catch (error) {
-      console.log("Error:", error)
+      console.log("Error:", error);
     }
   };
   useEffect(() => {
-    getUser();
+    getProducts();
   }, []);
 
   return !profile ? (
@@ -28,8 +33,8 @@ const Profile = () => {
         </div>
       </div>
       <div className="bg-white col-span-3 rounded-md px-2 py-4">
-      <h2 className="text-xl">{profile.name}</h2>
-      <p className="mt-2">{profile.email}</p>
+        <h2 className="text-xl">{profile.name}</h2>
+        <p className="mt-2">{profile.email}</p>
       </div>
     </div>
   );

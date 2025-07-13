@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { ID, OAuthProvider } from "appwrite";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { account } from "../appwrite/confing";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import { useRegisterMutation } from "../redux/features/services/auth";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -13,56 +11,45 @@ const Register = () => {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [register] = useRegisterMutation();
+  const [toggleEye, setToggleEye] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    axios
-      .post(`http://localhost:3000/api/auth/signup`, {
+
+    if (!form.email || !form.password || !form.username) {
+      toast.error("All fields are required.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const response = await register({
         email: form.email,
         password: form.password,
-        name: form.username,
-      })
-      .then(function (response) {
-        console.log(response);
-        
-        setIsLoading(false);
-        toast.success("User created successfully!");
-        setForm({
-          username: "",
-          email: "",
-          password: "",
-        });
+        username: form.username,
+      }).unwrap();
+      if (response.data) {
+        toast.success("Registration successful!");
         setTimeout(() => {
           navigate("/login");
-        }, 1000);
-      })
-      .catch(function (error) {
-        setIsLoading(false);
-        toast.error("Error in creating user!");
-        throw new Error(error);
-      });
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const promise = account.create(ID.unique(), form.email, form.password, form.username);
-
-    promise.then(
-      function (response) {
-        console.log(response); // Success
-        setIsLoading(false);
-      },
-      function (error) {
-        console.log(error); // Failure
+        }, 2000);
       }
-    );
+    } catch (error) {
+      console.error("Error:", error);
+      const errorMessage =
+        error.data?.message ||
+        "An unexpected error occurred. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const googleSignup = async (e) => {
+  const googleSignup = (e) => {
     e.preventDefault();
     // Go to OAuth provider login page
     account.createOAuth2Session(
@@ -74,24 +61,25 @@ const Register = () => {
   };
 
   return (
-    <div className="w-full min-h-screen max-w-xs mx-auto transition-opacity duration-500 ease-in-out opacity-100 pt-10">
+    <div className="w-full min-h-screen flex justify-center items-center px-5">
       <Toaster />
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative"
-        onSubmit={handleSubmit}
+        className="bg-white shadow rounded-lg px-8 pt-6 pb-8 mx-auto relative w-full md:w-[500px]"
+        onSubmit={handleRegister}
       >
         {isLoading && <div className="loader absolute top-0 left-0"></div>}
         <h2 className="text-center text-2xl font-bold mb-4">Register</h2>
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-bold mb-2 tracking-wide"
             htmlFor="username"
           >
             Username
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border-2 text-sm border-[#1F41BB] rounded w-full py-3 px-4 text-gray-700 leading-tight"
             id="username"
+            name="Username"
             type="text"
             placeholder="Username"
             value={form.username}
@@ -100,14 +88,15 @@ const Register = () => {
         </div>
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-bold mb-2 tracking-wide"
             htmlFor="email"
           >
             Email
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border-2 text-sm border-[#1F41BB] rounded w-full py-3 px-4 text-gray-700 leading-tight"
             id="email"
+            name="Email"
             type="email"
             placeholder="Email"
             value={form.email}
@@ -116,29 +105,78 @@ const Register = () => {
         </div>
         <div className="mb-6">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-bold mb-2 tracking-wide"
             htmlFor="password"
           >
             Password
           </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="password"
-            type="password"
-            placeholder="******************"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
+          <div className="flex border-2 border-[#1F41BB] focus-within:border-black rounded shadow">
+            <input
+              className="appearance-none outline-none rounded text-sm w-full py-3 px-4 text-gray-700 leading-tight"
+              id="password"
+              name="Password"
+              type={toggleEye ? "text" : "password"}
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+            />
+            <button
+              type="button"
+              className="p-2"
+              onClick={() => setToggleEye(!toggleEye)}
+            >
+              {toggleEye ? (
+                <svg
+                  className="w-6 h-6 text-gray-800"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-6 h-6 text-gray-800"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+                  />
+                  <path
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-700 w-[76.74%] mx-auto text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-[#1F41BB] hover:bg-gray-900 text-white w-full px-5 py-3 rounded-lg font-semibold transition"
             type="submit"
           >
             Register
           </button>
         </div>
-        <div className="text-center">
+        {/* <div className="text-center">
           <button type="button" className="gsi-material-button mt-2" onClick={googleSignup}>
             <div className="gsi-material-button-state"></div>
             <div className="gsi-material-button-content-wrapper">
@@ -175,11 +213,11 @@ const Register = () => {
               <span style={{ display: "none" }}>Sign up with Google</span>
             </div>
           </button>
-        </div>
+        </div> */}
         <div className="text-center mt-4">
           <Link
             to={`/login`}
-            className="text-blue-500 hover:text-blue-700 font-bold"
+            className="text-[#1F41BB] hover:text-blue-700 font-bold text-sm tracking-wide"
           >
             Already have an account?
           </Link>
