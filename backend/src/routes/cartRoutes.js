@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   addItemToCart,
-  deleteItemFromCart,
+  removeItemFromCart,
   listItemsInCart,
 } from "../controllers/cartController.js";
 import auth from "../middleware/auth.js";
@@ -9,7 +9,7 @@ import auth from "../middleware/auth.js";
 const router = Router();
 
 router.post("/add", auth, addItemToCart);
-router.delete("/:productId", auth, deleteItemFromCart);
+router.delete("/remove/:productId", auth, removeItemFromCart);
 router.get("/list", auth, listItemsInCart);
 
 export default router;

@@ -8,7 +8,7 @@ function auth(req, res, next) {
   if (!token || !token.startsWith("Bearer ")) {
     return res
       .status(401)
-      .json({ msg: "No token, authorization denied. Token required!" });
+      .json({ message: "No token, authorization denied. Token required!" });
   }
 
   const tokenValue = token.split(" ")[1];
@@ -26,7 +26,7 @@ function auth(req, res, next) {
     req.user = decoded.user;
     next();
   } catch (err) {
-    res.status(401).json({ msg: "Token is not valid" });
+    res.status(401).json({ message: "Token is not valid" });
   }
 }
 

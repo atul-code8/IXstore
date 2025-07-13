@@ -51,7 +51,8 @@ const logIn = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const isMatch = await compare(password, user.password);
+    const isMatch = compare(password, user.password);
+
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -63,20 +64,15 @@ const logIn = async (req, res) => {
       },
     };
 
-    sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: "12h" },
-      (err, token) => {
-        if (err) throw err;
-        // cookie
-        // res.cookie("token", token, { httpOnly: true });
-        res.json({
-          message: "Token generated successfully",
-          access_token: token,
-        });
-      }
-    );
+    const jwtToken = sign(payload, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    });
+
+    res.json({
+      success: true,
+      message: "User logged in successfully",
+      access_token: jwtToken,
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -103,16 +99,21 @@ const google = async (req, res) => {
 
       // After user creation, create a JWT token
       const jwtToken = sign(
-        { id: user._id, role: user.role },
+        {
+          user: {
+            id: user.id,
+            role: user.role,
+          },
+        },
         process.env.JWT_SECRET,
-        { expiresIn: "7d" }
+        { expiresIn: process.env.JWT_EXPIRES_IN }
       );
 
       // Respond with the created user and the JWT token
       return res.status(201).json({
         success: true,
         user: {
-          id: user._id,
+          id: user.id,
           username: user.username,
           email: user.email,
         },
@@ -122,21 +123,20 @@ const google = async (req, res) => {
     }
 
     const jwtToken = sign(
-      { id: user._id, role: user.role },
+      {
+        user: {
+          id: user.id,
+          role: user.role,
+        },
+      },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     );
-
-    // res.cookie("token", jwtToken, {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === "production",
-    //   sameSite: "strict",
-    // });
 
     res.json({
       success: true,
       user: {
-        id: user._id,
+        id: user.id,
         username: user.username,
         email: user.email,
       },
@@ -149,4 +149,14 @@ const google = async (req, res) => {
   }
 };
 
-export { signUp, logIn, google };
+const verifyToken = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Token missing" });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    res.status(200).json({ message: "Token valid", user: decoded });
+  });
+};
+
+export { signUp, logIn, google, verifyToken };
