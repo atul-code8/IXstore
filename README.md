@@ -1,4 +1,4 @@
-# 🛒 E-Commerce Website
+# 🛒 E-Commerce Website (IX Store)
 
 A fully functional modern e-commerce web application built using the **MERN stack** (MongoDB, Express.js, React.js, Node.js). This platform allows users to browse products, add them to their cart, and securely checkout. Users can manage products, orders, and users.
 
@@ -20,14 +20,15 @@ A fully functional modern e-commerce web application built using the **MERN stac
 - User management
 - Analytics dashboard (optional) -->
 
----
+<!-- --- -->
 
 ## 🛠️ Tech Stack
 
 ### 🔗 Frontend
 - React.js
 - Redux Toolkit
-- Tailwind CSS or Bootstrap
+- Tailwind CSS
+- Headless UI
 - React Router
 - Axios
 
@@ -38,7 +39,7 @@ A fully functional modern e-commerce web application built using the **MERN stac
 - JWT Authentication
 - Stripe Integration
 
----
+<!-- --- -->
 
 
 ## ✨ Acknowledgements
@@ -54,7 +55,7 @@ A fully functional modern e-commerce web application built using the **MERN stac
 
  - [Vercel](https://vercel.com/)
 
- ---
+ <!-- --- -->
 
 ## 🤝 Contributing
 
@@ -64,7 +65,5 @@ Contributions are welcome! If you have any suggestions, bug reports, or feature 
 ## 📫 Contact
  
  - 📧 [Email](mailto:atulghormare6@gmail.com)
- - 🧑‍💻 [GitHub](https://github.com/atul-code8)
+ <!-- - 🧑‍💻 [GitHub](https://github.com/atul-code8) -->
  - 🔗 [LinkedIn](https://www.linkedin.com/in/atul-ghormare-799748240/)
-
----
