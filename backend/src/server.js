@@ -10,6 +10,7 @@ import bodyParser from "body-parser";
 import connectDB from "./db/config.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import helmet from "helmet"
 
 
 const app = express();
@@ -27,7 +28,8 @@ const corsOptions = {
 app.set("view engine", "ejs");
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(helmet());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
